@@ -1,0 +1,25 @@
+/* GeminiChat.css */
+.gemini-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .message {
+    border-radius: 8px;
+    padding: 12px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 16px;
+  }
+  
+  .message-content {
+    white-space: pre-wrap;
+  }
+  
+  .chat-loading {
+    color: gray;
+    font-style: italic;
+  }
+  
