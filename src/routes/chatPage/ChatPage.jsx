@@ -53,7 +53,7 @@ const ChatPage = () => {
                     lqip={{ active: true, quality: 20 }}
                   />
                 )}
-
+                <div className="container">
                 {/* Display message text if available */}
                 {message.parts && message.parts[0]?.text && (
                   <div
@@ -83,6 +83,7 @@ const ChatPage = () => {
                     ></iframe>
                   </div>
                 )}
+                </div>
               </div>
             ))
           )}

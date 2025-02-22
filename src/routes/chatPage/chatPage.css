@@ -7,6 +7,11 @@
   padding: 30px 30px 150px 30px;
 }
 
+.container{
+  width: 90%;
+  padding-left: 30px;
+}
+
 .wrapper {
   flex: 1;
   overflow-y: auto;

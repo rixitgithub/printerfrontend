@@ -132,7 +132,9 @@ const NewPrompt = ({ data }) => {
         <GeminiChat question={query} answer={geminiAnswer} isComplete={isGeminiComplete} />
       )}
 
-      {options.video && query && <YouTubeSearch query={query} video={videoData} />}
+{options.video && query && (options.text ? isGeminiComplete : true) && (
+  <YouTubeSearch query={query} video={videoData} />
+)}
 
       <div className="endChat" ref={endRef}></div>
 

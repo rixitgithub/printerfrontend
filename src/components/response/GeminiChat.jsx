@@ -5,7 +5,6 @@ import remarkGfm from "remark-gfm";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import "./GeminiChat.css";
 
-
 // Safety settings for Gemini
 const safetySetting = [
   {
@@ -18,50 +17,43 @@ const safetySetting = [
   },
 ];
 
-// Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_PUBLIC_KEY);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
   safetySetting,
 });
 
-// Streaming function that calls the Gemini API and updates answer via the callback.
 export const streamGeminiResponse = async (question, onChunk) => {
   try {
-    // Start a new chat with an empty history
-    const chat = model.startChat({
-      history: [],
-      generationConfig: {},
-    });
+    const chat = model.startChat({ history: [], generationConfig: {} });
     const result = await chat.sendMessageStream([question]);
     let accumulatedText = "";
+    
     for await (const chunk of result.stream) {
       const text = chunk.text();
-      accumulatedText += text;
-      if (onChunk) {
-        onChunk(accumulatedText);
+      // Split new text into individual characters
+      for (const char of text) {
+        accumulatedText += char;
+        onChunk?.(accumulatedText);
+        // Add slight delay between characters for smooth animation
+        await new Promise(resolve => setTimeout(resolve, 20));
       }
     }
     return accumulatedText;
   } catch (error) {
     console.error("Error getting Gemini response:", error);
-    if (onChunk) onChunk("An error occurred while fetching the response.");
+    onChunk?.("An error occurred while fetching the response.");
     return "An error occurred while fetching the response.";
   }
 };
 
-// GeminiChat component simply displays the answer as it updates.
-const GeminiChat = ({ answer,isComplete  }) => {
+const GeminiChat = ({ answer, isComplete }) => {
   return (
-    <div className="message">
-      {answer ? (
-        <div className="message-content">
-          <Markdown remarkPlugins={[remarkGfm]}>{answer}</Markdown>
-          {!isComplete && <div className="typing-indicator">...</div>}
-        </div>
-      ) : (
-        <div className="chat-loading">Loading...</div>
-      )}
+    <div className="message gemini-message">
+      <div className="message-content">
+        <Markdown remarkPlugins={[remarkGfm]}>{answer}</Markdown>
+        {!isComplete && <span className="typing-indicator" />}
+      </div>
     </div>
   );
 };

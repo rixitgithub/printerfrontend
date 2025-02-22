@@ -69,7 +69,7 @@ const YouTubeSearch = ({ query, video: externalVideo }) => {
   return (
     <div className="youtube-container message">
       {isLoading ? (
-        <div className="youtube-loading">Loading...</div>
+        <div className="youtube-loading">Finding best video for you...</div>
       ) : (
         video && (
           <div className="video-container message-content">
